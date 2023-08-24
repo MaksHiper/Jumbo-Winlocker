@@ -14,15 +14,8 @@ from tkinter import *
 from PIL import Image, ImageTk
 import socket
 
-import socket
-from requests import get
-
-def start_client():
-    server_ip = get('https://api64.ipify.org?format=json').json()['ip']
-    server_port = 12345  # Порт сервера
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((server_ip, server_port))
-    print("Connected to server")
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("127.0.0.1", 12345))
 
 
 keyboard.add_hotkey("alt + tab", lambda: None, suppress =True)
