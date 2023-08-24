@@ -1,6 +1,6 @@
 ### Jumbo-Locker
 
-NOT FOR BAD!!!. Есть счетчик времени на 1ч. За это время нужно успеть ввести код разблокировки.
+NOT FOR BAD!!!. There is a time counter for 1 hour. During this time you need to have time to enter the unlock code.
 
-Kод разблокировки: 123123. 
-Чтобы использовать полный функционал уберать # в коде. 
+Unlock code: 123123. 
+To use the full functionality, remove # in the code
