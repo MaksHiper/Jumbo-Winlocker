@@ -11,7 +11,10 @@ def get_location(ip_address):
     return f"Location: {data.get('city', 'Unknown')}, {data.get('region', 'Unknown')}, {data.get('country', 'Unknown')}"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("127.0.0.1", 12345))
+server_ip = "0.0.0.0"  # Привязываем сервер ко всем доступным интерфейсам
+server_port = 80  # Используем порт 80
+
+server.bind((server_ip, server_port))
 server.listen()
 
 print("Server is listening...")
@@ -28,3 +31,4 @@ while True:
     print(location)
 
     user.close()
+
