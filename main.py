@@ -12,7 +12,7 @@ import pygame
 import keyboard
 from tkinter import *
 from PIL import Image, ImageTk
-import socket
+
 
 keyboard.add_hotkey("alt + tab", lambda: None, suppress=True)
 keyboard.add_hotkey("win + r", lambda: None, suppress=True)
